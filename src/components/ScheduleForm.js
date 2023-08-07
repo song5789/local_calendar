@@ -66,14 +66,6 @@ const FormBody = styled.div`
   margin-bottom: 1rem;
   position: relative;
 `;
-const Refresh = styled.button`
-  width: 10%;
-  height: 20px;
-  position: absolute;
-  top: 2%;
-  right: 2%;
-`;
-
 const Close = styled.div`
   position: absolute;
   font-size: 2.5rem;
@@ -93,7 +85,7 @@ function SheduleForm({ showForm, v }) {
   useEffect(() => {
     setList(
       state.filter((s) => {
-        return timeCompare(s.date, v.date);
+        return timeCompare(new Date(s.date), v.date);
       })
     );
   }, [state]);
@@ -116,7 +108,6 @@ function SheduleForm({ showForm, v }) {
           <h2>{dayName}</h2>
         </FormHead>
         <FormBody>
-          <Refresh>새로고침</Refresh>
           {lists.map((list) => (
             <ScheduleItem list={list} key={list.id} />
           ))}

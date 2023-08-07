@@ -5,6 +5,7 @@ import CalendarHead from "./CalendarHead";
 import CalendarWeeks from "./CalendarWeeks";
 import CalendarBody from "./CalendarBody";
 import { useCalendarState } from "../Context/ScheduleContext";
+import { MdSave, MdDelete } from "react-icons/md";
 
 const StyledCalendar = styled.div`
   width: 100%;
@@ -97,10 +98,43 @@ const StyledCalendar = styled.div`
   .calendar__button_today:active {
     opacity: 1;
   }
+
+  .save-btn {
+    background: black;
+    color: #fff;
+  }
+
+  .delete-btn {
+    color: #ff6b6b;
+  }
+`;
+const Button = styled.button`
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  font-size: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  position: fixed;
+  top: ${(props) => props.topheight || "100%"};
+  right: 2%;
+  border: none;
+
+  & + & {
+    margin-top: 1.5rem;
+  }
+
+  &:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 12px #000;
+  }
 `;
 
 export default function Calendar() {
   const [monthState, setmonthState] = useState([]);
+  const state = useCalendarState();
   const [weeks, setWeek] = useState([]);
   const [monthHandler, setMonthHandler] = useState(new Date().getMonth());
   const increaseMonth = () => setMonthHandler((state) => state + 1);
@@ -111,6 +145,13 @@ export default function Calendar() {
   const prevMonthObj = getPrevMonthObject(currentMonthObj.currentMonthFirstDate);
   const nextMonthObj = getNextMonthObject(currentMonthObj.currentMonthFirstDate);
 
+  const saveOnLocal = () => {
+    localStorage.setItem("schedules", JSON.stringify(state, null, 2));
+  };
+  const deleteAllSchedules = () => {
+    localStorage.clear();
+    window.location.reload(true);
+  };
   useEffect(() => {
     setmonthState(drawMonthWithDateObj(currentMonthObj, prevMonthObj, nextMonthObj));
     setWeek(["일", "월", "화", "수", "목", "금", "토"]);
@@ -124,6 +165,16 @@ export default function Calendar() {
       {monthState.map((v, index) => (
         <CalendarBody v={v} key={index} />
       ))}
+      <Button topheight="80%" className="save-btn" onClick={saveOnLocal}>
+        <abbr title="Local 저장">
+          <MdSave />
+        </abbr>
+      </Button>
+      <Button topheight="85%" className="delete-btn" onClick={deleteAllSchedules}>
+        <abbr title="Local 에 저장된 값 전체삭제">
+          <MdDelete />
+        </abbr>
+      </Button>
     </StyledCalendar>
   );
 }

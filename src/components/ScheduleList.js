@@ -35,13 +35,14 @@ const ListItmes = styled.div`
 
 export default function ScheduleList() {
   const state = useCalendarState();
+
   return (
     <ListBackground className="schedule-list">
       <h2>전체 일정</h2>
       {state.map((list) => (
         <ListItmes key={list.id}>
           <h3>
-            {list.date.toLocaleDateString("ko-KR", {
+            {new Date(list.date).toLocaleDateString("ko-KR", {
               year: "numeric",
               month: "long",
               day: "numeric",

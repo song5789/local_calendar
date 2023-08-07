@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer } from "react";
+import { createContext, useContext, useEffect, useReducer } from "react";
 
 const initialState = [];
 
@@ -31,6 +31,11 @@ const CalendarDispatchContext = createContext();
 export default function ScheduleContextProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
+  useEffect(() => {
+    if (localStorage.getItem("schedules")) {
+      dispatch({ type: "INSERT_SCHEDULES", schedule: JSON.parse(localStorage.getItem("schedules")) });
+    }
+  }, []);
   return (
     <CalendarDataContext.Provider value={state}>
       <CalendarDispatchContext.Provider value={dispatch}>{children}</CalendarDispatchContext.Provider>

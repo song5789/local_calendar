@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import ScheduleCreate from "./ScheduleCreate";
 import { useCalendarState } from "../Context/ScheduleContext";
 import ScheduleItem from "./ScheduleItem";
+import timeCompare from "../lib/timeCompare";
 
 const FadeIn = keyframes`
 0%{
@@ -86,11 +87,15 @@ const Close = styled.div`
 `;
 
 function SheduleForm({ showForm, v }) {
-  const state = useCalendarState();
   const [lists, setList] = useState([]);
+  const state = useCalendarState();
 
   useEffect(() => {
-    setList(state.filter((s) => s.date === v.date));
+    setList(
+      state.filter((s) => {
+        return timeCompare(s.date, v.date);
+      })
+    );
   }, [state]);
 
   const dateString = v.date.toLocaleDateString("ko-KR", {
@@ -99,10 +104,6 @@ function SheduleForm({ showForm, v }) {
     day: "numeric",
   });
 
-  const refreshList = () => {
-    setList(state.filter((s) => s.date === v.date));
-    console.log(state);
-  };
   const dayName = v.date.toLocaleDateString("ko-KR", { weekday: "long" });
   return (
     <FormPositioner>
@@ -115,7 +116,7 @@ function SheduleForm({ showForm, v }) {
           <h2>{dayName}</h2>
         </FormHead>
         <FormBody>
-          <Refresh onClick={refreshList}>새로고침</Refresh>
+          <Refresh>새로고침</Refresh>
           {lists.map((list) => (
             <ScheduleItem list={list} key={list.id} />
           ))}

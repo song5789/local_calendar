@@ -11,8 +11,8 @@ const MonthButton = styled.button`
 `;
 
 const ScheduleCircle = styled.div`
-  width: 0.5rem;
-  height: 0.5rem;
+  width: 0.001rem;
+  height: 0.001rem;
   padding: 0.5rem;
   border-radius: 50%;
   font-size: 0.5rem;

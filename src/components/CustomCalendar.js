@@ -8,6 +8,7 @@ import { useCalendarState } from "../Context/ScheduleContext";
 
 const StyledCalendar = styled.div`
   width: 100%;
+  min-width: 460px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;

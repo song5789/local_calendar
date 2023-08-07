@@ -1,6 +1,6 @@
 import styled, { css, keyframes } from "styled-components";
 import { MdClose, MdAdd } from "react-icons/md";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import ScheduleCreate from "./ScheduleCreate";
 import { useCalendarState } from "../Context/ScheduleContext";
 import ScheduleItem from "./ScheduleItem";
@@ -63,6 +63,14 @@ const FormBody = styled.div`
   padding: 1.2rem;
   box-sizing: border-box;
   margin-bottom: 1rem;
+  position: relative;
+`;
+const Refresh = styled.button`
+  width: 10%;
+  height: 20px;
+  position: absolute;
+  top: 2%;
+  right: 2%;
 `;
 
 const Close = styled.div`
@@ -77,13 +85,24 @@ const Close = styled.div`
   }
 `;
 
-export default function SheduleForm({ showForm, v }) {
+function SheduleForm({ showForm, v }) {
   const state = useCalendarState();
+  const [lists, setList] = useState([]);
+
+  useEffect(() => {
+    setList(state.filter((s) => s.date === v.date));
+  }, [state]);
+
   const dateString = v.date.toLocaleDateString("ko-KR", {
     year: "numeric",
     month: "long",
     day: "numeric",
   });
+
+  const refreshList = () => {
+    setList(state.filter((s) => s.date === v.date));
+    console.log(state);
+  };
   const dayName = v.date.toLocaleDateString("ko-KR", { weekday: "long" });
   return (
     <FormPositioner>
@@ -96,14 +115,15 @@ export default function SheduleForm({ showForm, v }) {
           <h2>{dayName}</h2>
         </FormHead>
         <FormBody>
-          {state
-            .filter((s) => s.date === v.date)
-            .map((list) => (
-              <ScheduleItem list={list} key={list.id} />
-            ))}
+          <Refresh onClick={refreshList}>새로고침</Refresh>
+          {lists.map((list) => (
+            <ScheduleItem list={list} key={list.id} />
+          ))}
         </FormBody>
         <ScheduleCreate v={v} />
       </ScheduleForm>
     </FormPositioner>
   );
 }
+
+export default React.memo(SheduleForm);

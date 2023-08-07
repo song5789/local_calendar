@@ -29,25 +29,10 @@ const ScheduleCircle = styled.div`
 `;
 
 export default function CalendarBody({ v }) {
-  const [lists, setLists] = useState([]);
-  const [hasSche, setHasSche] = useState(false);
   const [btnToggle, setBtnToggle] = useState(false);
 
-  const state = useCalendarState();
   const today = new Date();
   const isToday = timeCompare(today, v.date);
-
-  const isIncludes = (lists, date) => {
-    for (let item in lists) {
-      console.log(item.date);
-      if (item.date === date) return true;
-      return false;
-    }
-  };
-
-  useEffect(() => {
-    setLists(state.filter((s) => s.date === v.date));
-  }, [state, lists.length]);
 
   const toggleForm = () => {
     setBtnToggle(!btnToggle);
@@ -57,7 +42,6 @@ export default function CalendarBody({ v }) {
     <>
       <MonthButton className={`calendar__button ${v.class} ${isToday && "calendar__button_today"}`} onClick={toggleForm} holiday={v.date.getDay()}>
         {v.date.getDate()}
-        {lists.length !== 0 ? <ScheduleCircle>{lists.length}</ScheduleCircle> : ""}
       </MonthButton>
       {btnToggle && <ScheduleForm showForm={toggleForm} v={v} />}
     </>

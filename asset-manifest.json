@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/local_calendar/static/js/main.e60b697c.js",
+    "main.js": "/local_calendar/static/js/main.2b69942a.js",
     "index.html": "/local_calendar/index.html",
-    "main.e60b697c.js.map": "/local_calendar/static/js/main.e60b697c.js.map"
+    "main.2b69942a.js.map": "/local_calendar/static/js/main.2b69942a.js.map"
   },
   "entrypoints": [
-    "static/js/main.e60b697c.js"
+    "static/js/main.2b69942a.js"
   ]
 }

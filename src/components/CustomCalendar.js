@@ -108,6 +108,7 @@ const StyledCalendar = styled.div`
     color: #ff6b6b;
   }
 `;
+
 const Button = styled.button`
   width: 60px;
   height: 60px;
@@ -134,16 +135,11 @@ const Button = styled.button`
 
 export default function Calendar() {
   const [monthState, setmonthState] = useState([]);
-  const state = useCalendarState();
   const [weeks, setWeek] = useState([]);
+  const state = useCalendarState();
   const [monthHandler, setMonthHandler] = useState(new Date().getMonth());
   const increaseMonth = () => setMonthHandler((state) => state + 1);
   const decreaseMonth = () => setMonthHandler((state) => state - 1);
-
-  const today = new Date();
-  const currentMonthObj = getCurrentMonthObject(today, monthHandler);
-  const prevMonthObj = getPrevMonthObject(currentMonthObj.currentMonthFirstDate);
-  const nextMonthObj = getNextMonthObject(currentMonthObj.currentMonthFirstDate);
 
   const saveOnLocal = () => {
     localStorage.setItem("schedules", JSON.stringify(state, null, 2));
@@ -152,6 +148,12 @@ export default function Calendar() {
     localStorage.clear();
     window.location.reload(true);
   };
+
+  const today = new Date();
+  const currentMonthObj = getCurrentMonthObject(today, monthHandler);
+  const prevMonthObj = getPrevMonthObject(currentMonthObj.currentMonthFirstDate);
+  const nextMonthObj = getNextMonthObject(currentMonthObj.currentMonthFirstDate);
+
   useEffect(() => {
     setmonthState(drawMonthWithDateObj(currentMonthObj, prevMonthObj, nextMonthObj));
     setWeek(["일", "월", "화", "수", "목", "금", "토"]);

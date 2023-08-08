@@ -90,12 +90,12 @@ export function getHolidayList(date) {
     {
       date: new Date(date.getFullYear(), 5, 10),
       name: "6.10 민주항쟁기념일",
-      isHoliday: true,
+      isHoliday: false,
     },
     {
       date: new Date(date.getFullYear(), 5, 25),
       name: "6.25 전쟁일",
-      isHoliday: true,
+      isHoliday: false,
     },
     {
       date: new Date(date.getFullYear(), 6, 12),

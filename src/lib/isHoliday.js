@@ -1,6 +1,7 @@
+import { solarToLunar } from "./printLunaYear";
 import timeCompare from "./timeCompare";
 
-export function getHolidayList(date) {
+function getHolidayList(date) {
   return [
     {
       date: new Date(date.getFullYear(), 0, 1),
@@ -142,6 +143,5 @@ export function getHolidayList(date) {
 
 export default function isHoliday(date) {
   const holidays = getHolidayList(date);
-
   return holidays.filter((holiday) => timeCompare(date, holiday.date));
 }

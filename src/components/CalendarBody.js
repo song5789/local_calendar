@@ -2,13 +2,20 @@ import styled from "styled-components";
 import timeCompare from "../lib/timeCompare";
 import { useState } from "react";
 import ScheduleForm from "./ScheduleForm";
-import { useCalendarState } from "../Context/ScheduleContext";
 import { useEffect } from "react";
-import isHoliday from "../lib/isHoliday";
+import isHoliday, { isLunaHoliday } from "../lib/isHoliday";
+import { solarToLunar } from "../lib/printLunaYear";
 
 const MonthButton = styled.button`
   color: ${(props) => (props.holiday ? "#ed0909" : props.weekend === 6 ? "#135ef2" : props.weekend === 0 ? "#ed0909" : "inherit")};
   position: relative;
+  text-align: left;
+
+  .calendar__solarAndluna {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
 `;
 
 const ScheduleCircle = styled.div`
@@ -45,9 +52,16 @@ const HolidayBlock = styled.div`
   }
 `;
 
+const LunaMonth = styled.div`
+  font-size: 0.65rem;
+  color: gray !important;
+  margin-left: 0.25rem;
+`;
+
 export default function CalendarBody({ v }) {
   const [btnToggle, setBtnToggle] = useState(false);
   const [holiday, setHoliday] = useState([]);
+  const [lunaText, setLunaText] = useState("");
 
   const today = new Date();
   const isToday = timeCompare(today, v.date);
@@ -58,6 +72,7 @@ export default function CalendarBody({ v }) {
 
   useEffect(() => {
     setHoliday(isHoliday(v.date));
+    setLunaText(solarToLunar(v.date));
   }, [v.date]);
 
   return (
@@ -68,7 +83,11 @@ export default function CalendarBody({ v }) {
         weekend={v.date.getDay()}
         holiday={holiday[0] ? holiday[0].isHoliday : null}
       >
-        {v.date.getDate()}
+        <div className="calendar__solarAndluna">
+          {v.date.getDate()}
+          <br />
+          <LunaMonth>{lunaText.text}</LunaMonth>
+        </div>
         {holiday.map((h) => (
           <HolidayBlock holiday={h.isHoliday} key={h.name}>
             <abbr title={h.name}>{h.name}</abbr>
